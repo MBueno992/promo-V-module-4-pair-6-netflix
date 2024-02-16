@@ -49,3 +49,37 @@ mortificarse varchar(100)
 );
 
 DROP TABLE Pepino;
+
+CREATE TABLE movies_has_users (
+fk_users int,
+fk_movies int,
+idMoviesUsers int auto_increment primary key
+);
+
+INSERT INTO movies_has_users (fk_users, fk_movies) VALUES (1, 1), (1, 2), (3, 2);
+
+SELECT users.user, movies.title  
+FROM users, movies, movies_has_users
+WHERE users.idUser = movies_has_users.fk_users AND movies.idMovies = movies_has_users.fk_movies;
+
+ALTER TABLE movies_has_users ADD score int;
+
+SELECT * FROM movies_has_users;
+
+INSERT INTO movies_has_users(score) VALUES (7) WHERE idMovieUsers = 1;
+
+UPDATE movies_has_users SET score = 7 WHERE idMoviesUsers=1;
+UPDATE movies_has_users SET score = 10 WHERE idMoviesUsers=2;
+UPDATE movies_has_users SET score = 6 WHERE idMoviesUsers=3;
+
+CREATE TABLE movies_has_actors(
+fk_idActor int,
+fk_idMovie int,
+idMoviesActors int auto_increment primary key
+);
+
+INSERT INTO movies_has_actors (fk_idMovie, fk_idActor) VALUES (1, 3), (2, 2), (3, 1);
+
+SELECT actors.name, actors.lastname, movies.title
+FROM actors, movies, movies_has_actors
+WHERE actors.idActor = movies_has_actors.fk_idActor AND movies.idMovies = movies_has_actors.fk_idMovie;
