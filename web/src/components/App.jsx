@@ -38,9 +38,11 @@ const App = () => {
       genre: allMoviesOptionGenre,
       sort: allMoviesOptionSort,
     };
-    apiMovies.getMoviesFromApi(params).then((response) => {
+    apiMovies.getMoviesFromApi(allMoviesOptionGenre).then((response) => {
       setAppMovies(response.movies);
     });
+    console.log(allMoviesOptionGenre);
+    console.log(appMovies);
   }, [allMoviesOptionGenre, allMoviesOptionSort]);
 
   /*
@@ -135,7 +137,6 @@ const App = () => {
   Redireccionamos al inicio de la página.
   Recargamos la página para que se borren todos los datos del estado de React.
   */
-  console.log('Entorno:', process.env.NODE_ENV);
   const logout = () => {
     router.redirect('/');
     router.reload();

@@ -26,8 +26,10 @@ async function getConnection() {
 
 server.get('/movies', async (req, res) => {
   const conex = await getConnection();
-  const sql = 'SELECT * FROM movies';
-  const [results] = await conex.query(sql);
+  const sql = 'SELECT * FROM movies WHERE genre = ?';
+  const genreFilterParam = req.query.genre;
+  const sortFilterParam = req.query.sort;
+  const [results] = await conex.query(sql, [genreFilterParam, sortFilterParam]);
 
   conex.end();
   res.json({ success: true, movies: results });
