@@ -24,15 +24,30 @@ async function getConnection() {
   return connection;
 }
 
-server.get('/movies', async (req, res) => {
-  const conex = await getConnection();
-  const sql = 'SELECT * FROM movies WHERE genre = ?';
-  const genreFilterParam = req.query.genre;
-  const sortFilterParam = req.query.sort;
-  const [results] = await conex.query(sql, [genreFilterParam, sortFilterParam]);
+server.get('/movies', async(req, res)=>{
+  const { genre, sort } = req.query;
+  console.log(req.query);
+  const conex = await getConnection(); //este siempre es igual.
+
+  let listMovies = []; //variable global para guardar lo que devuelve la BD. 
+  if(genre === ""){
+      const selectMovie = `SELECT * FROM movies order by title ${sort}`;
+      const [resultMovies] = await conex.query(selectMovie);
+      listMovies = resultMovies;
+  }
+  else {
+      const selectMovie = `SELECT * FROM movies where genre = ? order by title ${sort}`;
+      const [resultMovies] = await conex.query(selectMovie, [genre]);
+      listMovies = resultMovies;
+  }
 
   conex.end();
-  res.json({ success: true, movies: results });
+  //devuelvo respuesta siempre: 
+  res.json({
+      success: true,
+      movies: listMovies,
+  });
+  //para comprobar que funciona: postman o navegador (pegar el localhost:4000/movies en google o en postman). 
 });
 
 const staticServ = './src/public-react';

@@ -5,10 +5,7 @@ const getMoviesFromApi = (params) => {
   const queryParams = `?genre=${params.genre}&sort=${params.sort}`;
 
   // CAMBIA ESTE FETCH PARA QUE APUNTE A UN ENDPOINT DE TU SERVIDOR, PIENSA SI DEBE SER GET O POST, PIENSA QUÉ DATOS DEBES ENVIAR, ETC
-  return fetch(`http://localhost:4000/movies${queryParams}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(params),
+  return fetch(`http://localhost:4000/movies?genre=${}`, {
   })
     .then((response) => response.json())
     .then((data) => {
