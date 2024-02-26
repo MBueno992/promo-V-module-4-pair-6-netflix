@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql2/promise');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 // create and config server
 const server = express();
@@ -50,6 +52,20 @@ server.get('/movies', async (req, res) => {
   //para comprobar que funciona: postman o navegador (pegar el localhost:4000/movies en google o en postman).
 });
 
+server.post('/login', async (req, res) => {
+  console.log(req.body);
+  const { email, password } = req.body;
+  const conex = await getConnection();
+  const selectUser = 'SELECT * FROM users WHERE email = ? AND password = ?';
+  const [resultUser] = await conex.query(selectUser, [email, password]);
+  console.log(resultUser);
+  if (resultUser.length !== 0) {
+    res.json({
+      success: true,
+    });
+  }
+});
+
 server.get('/movies/:movieId', async (req, res) => {
   const { movieId } = req.params;
   const conex = await getConnection();
@@ -58,12 +74,24 @@ server.get('/movies/:movieId', async (req, res) => {
   console.log(foundMovie);
   res.render('movie', { movie: foundMovie[0] });
 });
+
 server.post('/sign-up', async (req, res) => {
-  console.log(req.body);
   const { email, password } = req.body;
   const conex = await getConnection();
   const selectUser = 'SELECT * FROM users WHERE email = ?';
   const [resultUser] = await conex.query(selectUser, [email]);
+  if (resultUser.length === 0) {
+    const passwordHashed = await bcrypt.hash(password, 10);
+    const insertUser = 'INSERT INTO users (email, password) VALUES (?, ?)';
+    const [resultInsert] = await conex.query(insertUser, [
+      email,
+      passwordHashed,
+    ]);
+    res.json({ success: true, userId: resultInsert.insertId });
+    console.log(resultInsert);
+  } else {
+    res.json({ message: 'El email ya está registrado' });
+  }
 });
 
 const staticServ = './src/public-react';

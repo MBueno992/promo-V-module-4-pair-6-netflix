@@ -89,3 +89,17 @@ INSERT INTO `movies` VALUES (1,'Pulp Fiction','Crimen','https://pics.filmaffinit
 INSERT INTO `actors` VALUES (1,'Tom','Hanks','Estados Unidos','1956-07-09'),(2,'Roberto','Benigni','Italia','1952-10-27'),(3,'John','Travolta','Estados Unidos','1954-02-18');
 
 INSERT INTO `netflix`.`movies` (`title`, `genre`, `image`, `category`, `yearMovie`) VALUES ('Friends', 'Comedia', 'http://localhost:4000/friends.jpg', 'Top 10', '1994');
+
+ALTER TABLE `netflix`.`users` 
+CHANGE COLUMN `password` `password` VARCHAR(1500) NOT NULL ;
+
+ALTER TABLE `netflix`.`users` 
+CHANGE COLUMN `user` `user` VARCHAR(45) NULL ,
+CHANGE COLUMN `name` `name` VARCHAR(45) NULL ,
+CHANGE COLUMN `plan_details` `plan_details` VARCHAR(45) NULL ;
+
+UPDATE `netflix`.`users` SET `user` = 'la_lore', `password` = '12345678', `name` = 'La Lore', `email` = 'lore@gmail.com' WHERE (`idUser` = '1');
+UPDATE `netflix`.`users` SET `idUser` = '2', `user` = 'la_macu', `password` = '12345678', `name` = 'La Macu', `email` = 'macu@hotmail.com' WHERE (`idUser` = '3');
+UPDATE `netflix`.`users` SET `idUser` = '', `password` = '', `email` = '' WHERE (`idUser` = '4');
+
+
