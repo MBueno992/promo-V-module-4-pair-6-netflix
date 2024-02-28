@@ -98,8 +98,6 @@ CHANGE COLUMN `user` `user` VARCHAR(45) NULL ,
 CHANGE COLUMN `name` `name` VARCHAR(45) NULL ,
 CHANGE COLUMN `plan_details` `plan_details` VARCHAR(45) NULL ;
 
-UPDATE `netflix`.`users` SET `user` = 'la_lore', `password` = '12345678', `name` = 'La Lore', `email` = 'lore@gmail.com' WHERE (`idUser` = '1');
-UPDATE `netflix`.`users` SET `idUser` = '2', `user` = 'la_macu', `password` = '12345678', `name` = 'La Macu', `email` = 'macu@hotmail.com' WHERE (`idUser` = '3');
-UPDATE `netflix`.`users` SET `idUser` = '', `password` = '', `email` = '' WHERE (`idUser` = '4');
-
+INSERT INTO `netflix`.`users` (`user`, `password`, `name`, `email`, `plan_details`) VALUES ('la_Lore', '12345678', 'La Lore', 'lore@gmail.com', 'Standard');
+INSERT INTO `netflix`.`users` (`user`, `password`, `name`, `email`, `plan_details`) VALUES ('la_macu', '12345678', 'La Macu', 'macu@hotmail.com', 'Standard');
 

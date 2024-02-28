@@ -89,7 +89,7 @@ const App = () => {
         router.redirect('/');
       } else {
         // Si la usuaria introduce mal sus datos guardamos el error que nos devuelve el API para que se pinte en la página
-        setLoginErrorMessage(response.errorMessage);
+        setLoginErrorMessage(response.msg);
       }
     });
   };

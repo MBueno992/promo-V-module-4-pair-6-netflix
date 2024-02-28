@@ -56,13 +56,23 @@ server.post('/login', async (req, res) => {
   console.log(req.body);
   const { email, password } = req.body;
   const conex = await getConnection();
-  const selectUser = 'SELECT * FROM users WHERE email = ? AND password = ?';
-  const [resultUser] = await conex.query(selectUser, [email, password]);
+  const selectUser = 'SELECT * FROM users WHERE email = ?';
+  const [resultUser] = await conex.query(selectUser, [email]);
   console.log(resultUser);
   if (resultUser.length !== 0) {
-    res.json({
-      success: true,
-    });
+    const isOkPass = await bcrypt.compare(password, resultUser[0].password);
+    if (isOkPass) {
+      const infoToken = {
+        id: resultUser[0].id,
+        email: resultUser[0].email,
+      };
+      const token = generateToken(infoToken);
+      res.json({ success: true, token: token });
+    } else {
+      res.json({ success: false, msg: 'Contraseña incorrecta' });
+    }
+  } else {
+    res.json({ success: false, msg: 'El correo no existe' });
   }
 });
 
